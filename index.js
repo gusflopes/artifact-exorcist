@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 // Cria uma função para aguardar a entrada do usuário
 function pressAnyKeyToContinue() {
   return new Promise((resolve) => {
-    rl.question('\n\nPressione qualquer tecla para continuar...', () => {
+    rl.question('\n\nPressione qualquer tecla para invocar os espíritos dos artefatos...', () => {
       resolve();
     });
   });
@@ -19,7 +19,7 @@ function pressAnyKeyToContinue() {
 
 async function promptRepositoryName() {
   return new Promise((resolve) => {
-    rl.question('Digite o nome do Usuário ou Organização: ', (answer) => {
+    rl.question('Digite o nome do Usuário ou Organização assombrada: ', (answer) => {
       resolve(answer);
     });
   });
@@ -65,63 +65,63 @@ async function main() {
 
   try {
     const repositories = await githubRepository.getRepositories();
-    console.log(`Verificamos que você tem um total de ${repositories.length} repositórios! Vamos listar todos eles:`);
+    console.log(`Verificamos que você tem um total de ${repositories.length} repositórios assombrados! Vamos revelar todos eles:`);
     await pressAnyKeyToContinue()
 
     let result = [];
     let totalArtifacts = 0;
 
     for (const repository of repositories) {
-      console.log(`Repositório: ${repository.name}`);
+      console.log(`Repositório assombrado: ${repository.name}`);
       const artifacts = await githubRepository.getArtifacts(repository.name);
-      console.log(`Total de artefatos do Repositório [${repository.name}]: ${artifacts.length}`);
-      console.log(`------------------`)
+      console.log(`Total de artefatos do Repositório Assombrado [${repository.name}]: ${artifacts.length}`);
+      console.log(`---------👻---------`)
       totalArtifacts += artifacts.length;
       result.push({ repositoryName: repository.name, artifacts: artifacts });
     }
 
-    console.log("\n\nCerto! Agora vamos listar todos os artefatos encontrados.\n\n")
+    console.log("\n\nMistérios se desdobram diante de nós! Aqui estão todos os artefatos encontrados. 👻🧹💾\n\n")
     await pressAnyKeyToContinue()
     console.log(result);
-    console.log(`\nEncontramos um total de ${totalArtifacts} artefatos conforme listado acima.\n\n`);
+    console.log(`\nEncontramos um total de ${totalArtifacts} artefatos assustadores para exorcizar... 🧨💥\n\n`);
   
     if (totalArtifacts > 0) {
-      rl.question('Deseja deletar todos os artefatos? (Y/N): ', async (answer) => {
+      rl.question('Deseja exorcizar todos os artefatos malignos? (Y/N): ', async (answer) => {
         if (answer.toLowerCase() === 'y') {
-          console.log('Deletando os artefatos...');
+          console.log('Preparando os feitiços e encantamentos...');
           const deletePromises = [];
   
           for (const repository of result) {
             for (const artifact of repository.artifacts) {
-              console.log(`Deletando Artefato: ${artifact.id} - ${artifact.name}`);
+              console.log(`Executando exorcismo no Artefato: ${artifact.id} - ${artifact.name}`);
               deletePromises.push(githubRepository.deleteArtifact(repository.repositoryName, artifact.id));
             }
           }
   
           try {
             await Promise.all(deletePromises);
-            console.log('Todos os artefatos foram deletados com sucesso.');
+            console.log('Os artefatos foram exorcizados com sucesso. 🪄✨');
             await pressAnyKeyToContinue()
           } catch (error) {
-            console.error('Ocorreu um erro ao deletar os artefatos:', error);
+            console.error('Ocorreu um erro durante o exorcismo...', error);
           }
         } else {
-          console.log('Nenhum artefato será deletado.');
+          console.log('Os artefatos continuam assombrados... 👻');
           await pressAnyKeyToContinue()
         }
       });
     } else {
-      console.log('Nenhum artefato foi encontrado.');
+      console.log('Nenhum artefato maligno foi encontrado. A tranquilidade reina! 🌟😌\n');
     }
 
-    console.log('Obrigado por usar essa ferramenta! 👍\n');
-    console.log('Não esqueça de deixar uma ⭐ no repositório: https://github.com/gusflopes/artifact-exorcist 👻🧹💾\n');
+    console.log('\nObrigado por usar essa ferramenta de exorcismo de artefatos! 👍\n');
+    console.log('\nNão esqueça de deixar uma ⭐️ no repositório: https://github.com/gusflopes/artifact-exorcist 👻🧹💾\n');
     await pressAnyKeyToContinue()
     
     rl.close();
     
   } catch (error) {
-    console.error(`Erro na requisição: ${error}`);
+    console.error(`\nUm espírito maligno causou um erro durante a requisição: ${error}`);
   }
 }
 
