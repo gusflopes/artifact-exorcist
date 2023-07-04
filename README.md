@@ -54,4 +54,4 @@ Patreon: patreon.com/gusflopes
 
 Gustavo Lopes - gusflopes86@gmail.com
 
-Projeto Link: https://github.com/gusflopes/artifactexorcist
+Projeto Link: https://github.com/gusflopes/artifact-exorcist
