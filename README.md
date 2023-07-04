@@ -14,7 +14,13 @@
 
 2- Execute o comando `pnpm install` para instalar todas as dependências necessárias.
 
-3- Execute o comando `node index.js` para iniciar o processo de limpeza.
+3- Adicione sua Access Key para se conectar ao Github na variável de ambiente (`.env`)
+
+4- Execute o comando `node index.js` para iniciar o processo de limpeza.
+
+5- Informe o Usuário ou Organização que pretende fazer a limpeza;
+
+6- Ao ser questionado se deseja limpar os repositórios, digite **Y** para sim.
 
 ## Suporte 💫
 

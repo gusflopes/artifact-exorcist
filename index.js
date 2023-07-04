@@ -17,44 +17,51 @@ function pressAnyKeyToContinue() {
   });
 }
 
-async function promptRepository() {
-  return 'NETBROKERS'
+async function promptRepositoryName() {
+  return new Promise((resolve) => {
+    rl.question('Digite o nome do Usuário ou Organização: ', (answer) => {
+      resolve(answer);
+    });
+  });
 }
 
 class GithubRepository {
   constructor(owner, token){
+    // require('dotenv').config();
     this.owner = owner;
-    this.token = process.env.GITHUB_TOKEN;
+    this.token = process.env.GITHUB_TOKEN || token;
     this.headers = {
       'Accept': 'application/vnd.github.v3+json',
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `Bearer ${this.token}`,
     }
   };
 
   async getRepositories() {
     const url = `https://api.github.com/orgs/${this.owner}/repos`;
-    const response = await axios.get(url, { headers })
+    const headers = this.headers;
+    const response = await axios.get(url, { headers: this.headers })
     return response.data;
   }
 
   async deleteArtifact(repositoryName, artifactId) {
     const url = `https://api.github.com/repos/${this.owner}/${repositoryName}/actions/artifacts/${artifactId}`;
-    await axios.delete(url, { headers })
+    await axios.delete(url, { headers: this.headers })
   }
 
   async getArtifacts(repositoryName) {
     const url = `https://api.github.com/repos/${this.owner}/${repositoryName}/actions/artifacts`;
-    const response = await axios.get(url, { headers })
+    const response = await axios.get(url, {headers: this.headers})
     return response.data.artifacts;
   }
 }
 
 async function main() {
-  rl.write('\nBem Vindo à ferramenta de Limpeza de Artefatos do GitHub!\nDesenvolvido por @gusflopes: https://github.com/gusflopes\n')
+  rl.write('\nBem Vindo à ferramenta Artifact Exorcist! 👻🧹💾\nDesenvolvido por @gusflopes: https://github.com/gusflopes\n')
   await pressAnyKeyToContinue()
 
-  var owner = await promptRepository();
-  const githubRepository = new GithubRepository(owner, process.env.GITHUB_TOKEN);
+  const owner = await promptRepositoryName();
+  // const githubRepository = new GithubRepository(owner, token);
+  const githubRepository = new GithubRepository(owner);
 
   try {
     const repositories = await githubRepository.getRepositories();
@@ -103,10 +110,12 @@ async function main() {
           await pressAnyKeyToContinue()
         }
       });
+    } else {
+      console.log('Nenhum artefato foi encontrado.');
     }
 
     console.log('Obrigado por usar essa ferramenta! 👍\n');
-    console.log('Não esqueça de deixar uma ⭐ no repositório: https://github.com/gusflopes/github-tools 👀\n');
+    console.log('Não esqueça de deixar uma ⭐ no repositório: https://github.com/gusflopes/artifact-exorcist 👻🧹💾\n');
     await pressAnyKeyToContinue()
     
     rl.close();
