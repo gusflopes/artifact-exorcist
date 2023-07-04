@@ -2,18 +2,6 @@ require('dotenv').config();
 const axios = require('axios');
 const readline = require('readline');
 
-// console.log("Hello World!");
-
-  // Parâmetros
-  const owner = 'NETBROKERS';
-  // const workflowId = 'id-do-workflow';
-  const token = process.env.GITHUB_TOKEN;
-  const headers = {
-    'Accept': 'application/vnd.github.v3+json',
-    'Authorization': `Bearer ${token}`,
-  };
-
-
 // Cria a interface de leitura
 const rl = readline.createInterface({
   input: process.stdin,
@@ -29,30 +17,47 @@ function pressAnyKeyToContinue() {
   });
 }
 
-
-async function deleteArtifact(repositoryName, artifactId) {
-  const url = `https://api.github.com/repos/${owner}/${repositoryName}/actions/artifacts/${artifactId}`;
-  await axios.delete(url, { headers })
+async function promptRepository() {
+  return 'NETBROKERS'
 }
 
-async function getRepositories() {
-  const url = `https://api.github.com/orgs/${owner}/repos`;
-  const response = await axios.get(url, { headers })
-  return response.data;
-}
+class GithubRepository {
+  constructor(owner, token){
+    this.owner = owner;
+    this.token = process.env.GITHUB_TOKEN;
+    this.headers = {
+      'Accept': 'application/vnd.github.v3+json',
+      'Authorization': `Bearer ${token}`,
+    }
+  };
 
-async function getArtifacts(repositoryName) {
-  const url = `https://api.github.com/repos/${owner}/${repositoryName}/actions/artifacts`;
-  const response = await axios.get(url, { headers })
-  return response.data.artifacts;
+  async getRepositories() {
+    const url = `https://api.github.com/orgs/${this.owner}/repos`;
+    const response = await axios.get(url, { headers })
+    return response.data;
+  }
+
+  async deleteArtifact(repositoryName, artifactId) {
+    const url = `https://api.github.com/repos/${this.owner}/${repositoryName}/actions/artifacts/${artifactId}`;
+    await axios.delete(url, { headers })
+  }
+
+  async getArtifacts(repositoryName) {
+    const url = `https://api.github.com/repos/${this.owner}/${repositoryName}/actions/artifacts`;
+    const response = await axios.get(url, { headers })
+    return response.data.artifacts;
+  }
 }
 
 async function main() {
   rl.write('\nBem Vindo à ferramenta de Limpeza de Artefatos do GitHub!\nDesenvolvido por @gusflopes: https://github.com/gusflopes\n')
   await pressAnyKeyToContinue()
 
+  var owner = await promptRepository();
+  const githubRepository = new GithubRepository(owner, process.env.GITHUB_TOKEN);
+
   try {
-    const repositories = await getRepositories();
+    const repositories = await githubRepository.getRepositories();
     console.log(`Verificamos que você tem um total de ${repositories.length} repositórios! Vamos listar todos eles:`);
     await pressAnyKeyToContinue()
 
@@ -61,7 +66,7 @@ async function main() {
 
     for (const repository of repositories) {
       console.log(`Repositório: ${repository.name}`);
-      const artifacts = await getArtifacts(repository.name);
+      const artifacts = await githubRepository.getArtifacts(repository.name);
       console.log(`Total de artefatos do Repositório [${repository.name}]: ${artifacts.length}`);
       console.log(`------------------`)
       totalArtifacts += artifacts.length;
@@ -82,7 +87,7 @@ async function main() {
           for (const repository of result) {
             for (const artifact of repository.artifacts) {
               console.log(`Deletando Artefato: ${artifact.id} - ${artifact.name}`);
-              deletePromises.push(deleteArtifact(repository.repositoryName, artifact.id));
+              deletePromises.push(githubRepository.deleteArtifact(repository.repositoryName, artifact.id));
             }
           }
   
@@ -100,7 +105,6 @@ async function main() {
       });
     }
 
-
     console.log('Obrigado por usar essa ferramenta! 👍\n');
     console.log('Não esqueça de deixar uma ⭐ no repositório: https://github.com/gusflopes/github-tools 👀\n');
     await pressAnyKeyToContinue()
@@ -113,5 +117,3 @@ async function main() {
 }
 
 main();
-
-
