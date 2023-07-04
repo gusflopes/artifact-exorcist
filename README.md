@@ -11,22 +11,29 @@
 ## Como usar 🛠️
 
 1- Clone este repositório para a sua máquina local.
+
 2- Execute o comando `pnpm install` para instalar todas as dependências necessárias.
+
 3- Execute o comando `node index.js` para iniciar o processo de limpeza.
 
 ## Suporte 💫
 
-Se você tiver algum problema ou sugestão para melhorias, sinta-se à vontade para abrir uma [https://github.com/gusflopes/artifactexorcist/issues]issue no GitHub. Vamos trabalhar juntos para melhorar esta ferramenta.
+Se você tiver algum problema ou sugestão para melhorias, sinta-se à vontade para abrir uma [https://github.com/gusflopes/artifactexorcist/issues](issue) no GitHub. Vamos trabalhar juntos para melhorar esta ferramenta.
 
 ## Contribuição 🗑️
 
 Contribuições são sempre bem-vindas! Se você deseja contribuir com o projeto, por favor, siga as seguintes etapas:
 
 1- Faça um Fork do repositório.
+
 2- Crie uma Branch para a sua Feature (git checkout -b feature/AmazingFeature).
+
 3- Adicione suas mudanças (git add .).
+
 4- Commit suas mudanças (git commit -m 'Adicionei uma nova AmazingFeature').
+
 5- Faça o Push da Branch (git push origin feature/AmazingFeature).
+
 6- Abra um Pull Request.
 
 ## Me pague um café ☕
