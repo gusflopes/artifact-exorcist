@@ -18,7 +18,7 @@
 
 ## Suporte 💫
 
-Se você tiver algum problema ou sugestão para melhorias, sinta-se à vontade para abrir uma [https://github.com/gusflopes/artifactexorcist/issues](issue) no GitHub. Vamos trabalhar juntos para melhorar esta ferramenta.
+Se você tiver algum problema ou sugestão para melhorias, sinta-se à vontade para abrir uma [issue](https://github.com/gusflopes/artifactexorcist/issues) no GitHub. Vamos trabalhar juntos para melhorar esta ferramenta.
 
 ## Contribuição 🗑️
 
